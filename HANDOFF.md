@@ -1,7 +1,7 @@
 # Demo Store — handoff for a new Claude session
 
-Paste or attach this file at the start of the new session. It is self-contained: the code from the
-previous session is **not** in the new container, so rebuild from this spec (section 4).
+Read this file first in the new session. The code is already in the repo (`main`); section 4 documents
+what the scaffold contains.
 
 ## 1. Why this exists
 
@@ -29,12 +29,12 @@ rankings or guaranteed results. Products and prices are fictional.
 | Scaffold (catalogue, categories, product pages, cart, checkout stub, SEO basics) | Built, `npm run lint` clean, `npm run build` passes |
 | Smoke test | `/`, `/category/*`, `/products/*`, `/cart`, `/checkout`, `/sitemap.xml`, `/robots.txt` return 200; unknown slug returns 404; Product JSON-LD present |
 | Cart click-through in a real browser | **Not tested** |
-| GitHub repo | Private repo `modhshubham3/demo-store` was created by the user, **empty, nothing pushed**. The previous session could not push: git proxy said the repo is not in the session's authorized set and `add_repo` was refused. Fix: give the Claude GitHub App access to the repo at https://github.com/apps/claude/installations/select_target, and **start the new session with `demo-store` selected** |
+| GitHub repo | Private repo `modhshubham3/demo-store`: scaffold, this file and README are pushed to `main` (the code is already in your checkout, no rebuild needed) |
 | Deploy | Not deployed |
 | Payments | **Not implemented** (checkout is a stub) |
 | Real images | None (emoji + colour tint placeholders) |
 
-## 4. Spec to rebuild the scaffold
+## 4. What the scaffold contains
 
 **Stack:** Next.js `16.3.2`, React `19.2.8`, Tailwind CSS 4 (`@tailwindcss/postcss`), TypeScript 5,
 ESLint 9 with `eslint-config-next@16.3.2`. App Router, `src/` folder, `@/*` alias to `./src/*`.
@@ -77,7 +77,7 @@ bottle 899, canvas tote 549).
 
 ## 5. Next steps (in this order)
 
-1. Get `demo-store` repo access working, push the scaffold to `main`.
+1. Run `npm install`, then `npm run lint && npm run build` to confirm the checkout is healthy.
 2. Test the cart in a real browser (Playwright/Chromium is pre-installed): add, change quantity,
    refresh persistence, empty state.
 3. **Payments:** add `src/app/api/orders/route.ts`. Recompute the total on the server from
