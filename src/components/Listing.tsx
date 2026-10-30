@@ -13,6 +13,8 @@ const PRICE_BANDS = [
   { id: "o2000", label: "Over ₹2,000", min: 2001, max: Infinity },
 ];
 
+const SIZE_ORDER = ["S", "M", "L", "XL", "XXL"];
+
 const sorters: Record<Sort, (a: Product, b: Product) => number> = {
   relevance: () => 0,
   "price-asc": (a, b) => a.price - b.price,
@@ -30,11 +32,16 @@ function toggle<T>(set: Set<T>, v: T) {
 export default function Listing({ items }: { items: Product[] }) {
   const [sort, setSort] = useState<Sort>("relevance");
   const [bands, setBands] = useState<Set<string>>(new Set());
+  const [sizeSel, setSizeSel] = useState<Set<string>>(new Set());
   const [brandSel, setBrandSel] = useState<Set<string>>(new Set());
   const [minRating, setMinRating] = useState(0);
   const [minDiscount, setMinDiscount] = useState(0);
   const [open, setOpen] = useState(false);
 
+  const sizeList = useMemo(() => {
+    const all = [...new Set(items.flatMap((p) => p.sizes))];
+    return all.sort((a, b) => (SIZE_ORDER.indexOf(a) + 1 || Number(a) || 99) - (SIZE_ORDER.indexOf(b) + 1 || Number(b) || 99));
+  }, [items]);
   const brandList = useMemo(() => [...new Set(items.map((p) => p.brand))].sort(), [items]);
 
   const shown = useMemo(() => {
@@ -44,16 +51,18 @@ export default function Listing({ items }: { items: Product[] }) {
         (p) =>
           (active.length === 0 || active.some((b) => p.price >= b.min && p.price <= b.max)) &&
           (brandSel.size === 0 || brandSel.has(p.brand)) &&
+          (sizeSel.size === 0 || p.sizes.some((x) => sizeSel.has(x))) &&
           p.rating >= minRating &&
           discountPct(p) >= minDiscount,
       )
       .sort(sorters[sort]);
-  }, [items, bands, brandSel, minRating, minDiscount, sort]);
+  }, [items, bands, brandSel, sizeSel, minRating, minDiscount, sort]);
 
-  const filtersOn = bands.size + brandSel.size + (minRating ? 1 : 0) + (minDiscount ? 1 : 0);
+  const filtersOn = bands.size + brandSel.size + sizeSel.size + (minRating ? 1 : 0) + (minDiscount ? 1 : 0);
   const reset = () => {
     setBands(new Set());
     setBrandSel(new Set());
+    setSizeSel(new Set());
     setMinRating(0);
     setMinDiscount(0);
   };
@@ -64,7 +73,7 @@ export default function Listing({ items }: { items: Product[] }) {
 
   return (
     <div className="grid grid-cols-[250px_1fr] gap-6 max-[820px]:grid-cols-1">
-      <aside aria-label="Filters" className="h-fit rounded-xl border border-line bg-panel p-4 md:sticky md:top-28">
+      <aside aria-label="Filters" className="h-fit rounded-2xl border border-line bg-panel p-4 md:sticky md:top-32">
         <button
           type="button"
           onClick={() => setOpen(!open)}
@@ -83,6 +92,24 @@ export default function Listing({ items }: { items: Product[] }) {
             ) : null}
           </div>
           <fieldset className={group}>
+            <legend className={heading}>Size</legend>
+            <div className="flex flex-wrap gap-2">
+              {sizeList.map((z) => (
+                <label key={z} className="cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="peer sr-only"
+                    checked={sizeSel.has(z)}
+                    onChange={() => setSizeSel(toggle(sizeSel, z))}
+                  />
+                  <span className="block min-w-[46px] rounded-full border border-line px-3 py-1.5 text-center text-sm font-semibold peer-checked:border-ink peer-checked:bg-ink peer-checked:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-accent">
+                    {z}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+          <fieldset className={`${group} mt-4`}>
             <legend className={heading}>Price</legend>
             {PRICE_BANDS.map((b) => (
               <label key={b.id} className={opt}>

@@ -36,11 +36,11 @@ export default function CheckoutPage() {
     setBusy(true);
     setNotice("");
     try {
-      // Only slug + qty go to the server; it recomputes every price itself.
+      // Only slug, size + qty go to the server; it recomputes every price itself.
       const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items: items.map((i) => ({ slug: i.product.slug, qty: i.qty })) }),
+        body: JSON.stringify({ items: items.map((i) => ({ slug: i.product.slug, size: i.size, qty: i.qty })) }),
       });
       const order = await res.json();
       if (!res.ok) throw new Error(order.error ?? "Could not start payment.");
@@ -79,7 +79,7 @@ export default function CheckoutPage() {
   if (paid) {
     return (
       <>
-        <h1 className="text-4xl font-extrabold">Payment received</h1>
+        <h1 className="font-display text-4xl font-extrabold">Payment received</h1>
         <p role="status" className="mt-4 text-muted">
           Thank you! Test payment {paid} verified. This is a demo store, nothing will ship.
         </p>
@@ -93,7 +93,7 @@ export default function CheckoutPage() {
   if (items.length === 0) {
     return (
       <>
-        <h1 className="text-4xl font-extrabold">Checkout</h1>
+        <h1 className="font-display text-4xl font-extrabold">Checkout</h1>
         <p className="mt-4 text-muted">Nothing to check out yet.</p>
         <Link href="/" className="mt-6 inline-block font-bold text-accent">
           Back to shop →
@@ -104,7 +104,7 @@ export default function CheckoutPage() {
 
   return (
     <>
-      <h1 className="text-4xl font-extrabold">Checkout</h1>
+      <h1 className="font-display text-4xl font-extrabold">Checkout</h1>
       <div className="mt-8 grid grid-cols-[1.2fr_0.8fr] gap-8 max-[760px]:grid-cols-1">
         <form
           className="grid gap-4 rounded-2xl border border-line bg-panel p-6"
@@ -149,9 +149,9 @@ export default function CheckoutPage() {
         <aside className="h-fit rounded-2xl border border-line bg-panel p-6">
           <h2 className="text-xl font-bold">Order summary</h2>
           <ul className="mt-4 grid list-none gap-2 text-sm">
-            {items.map(({ product: p, qty }) => (
-              <li key={p.slug} className="flex justify-between gap-4">
-                <span>{p.name} × {qty}</span>
+            {items.map(({ key, product: p, size, qty }) => (
+              <li key={key} className="flex justify-between gap-4">
+                <span>{p.name} ({size}) × {qty}</span>
                 <span className="tabular-nums">{formatINR(p.price * qty)}</span>
               </li>
             ))}

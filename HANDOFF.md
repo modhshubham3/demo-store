@@ -75,15 +75,20 @@ bottle 899, canvas tote 549).
 - `src/app/sitemap.ts` (home, categories, products), `robots.ts` (disallow `/cart`, `/checkout`),
   `not-found.tsx`.
 
-## 4b. Marketplace redesign (Phase 1 done)
+## 4b. Clothing-only marketplace redesign (done)
 
-Redesigned after the user said the scaffold looked too basic versus Amazon/Flipkart/Myntra/Meesho.
-Patterns copied, not branding. Catalogue is now 42 fictional products in 7 categories with brand, MRP,
-rating, reviews. New: header search (`/search`, noindex), filter sidebar + sort (`Listing.tsx`), deal rows
-on home, rating pills, discount badges, pincode check (demo logic), Buy now, similar products,
-BreadcrumbList JSON-LD. Ratings are fictional, so no `aggregateRating` markup on purpose.
-Phase 2 (not done): size picker (needs cart line schema `slug+size` and API validation), wishlist, real
-coupon code applied at checkout, cart savings line, mobile bottom nav, recently viewed.
+The user said the first scaffold looked too basic and that it should be a **clothing** demo with real
+images, landscape screenshots (1280x720, not tall full-page) and a first-glance attractive UI (clients
+judge the UI first). Done: 31 fictional clothing products in 5 categories (Women's Ethnic, Women's
+Western, Men's Casual, Men's Ethnic, Winterwear), brand/MRP/rating/colour, **size picker** (cart lines are
+`slug|size`; `/api/orders` validates size against the product), search, filters incl. size, sort, serif
+display font (Playfair), dark announcement bar, gradient hero, category tiles, deal banners.
+Ratings are fictional, so no `aggregateRating` markup on purpose; fake "offers" were removed.
+
+**Real images are NOT done.** The environment network policy blocks images.unsplash.com, pexels.com etc.
+(proxy 403). Until photos exist, `ProductImage` draws vector garments (`Garment.tsx`). To add a photo set
+`image: "/products/<slug>.jpg"` on a product (file under `public/products/`, `next/image` handles it).
+Remaining ideas: wishlist, coupon code applied at checkout, mobile bottom nav, recently viewed.
 
 ## 5. Next steps (in this order)
 
@@ -94,7 +99,7 @@ coupon code applied at checkout, cart savings line, mobile bottom nav, recently 
    `src/data/products.ts` (never trust prices from the browser), create a **Razorpay test-mode** order,
    open Razorpay Checkout on the client, verify the payment signature on the server. Keys go in
    environment variables, never in the repo.
-4. Replace emoji placeholders with real product images (`next/image`, proper `alt`, sized to avoid
+4. Replace the vector garment placeholders with real product photos (`next/image`, proper `alt`, sized to avoid
    layout shift).
 5. Deploy to Vercel (ask the user first); set `NEXT_PUBLIC_SITE_URL` to the real URL; run Lighthouse
    and record the scores — these are the SEO proof for the lead.

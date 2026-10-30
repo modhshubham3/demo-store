@@ -1,7 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { cartStore } from "@/lib/cart";
+import { cartStore, lineKey } from "@/lib/cart";
 import { getProduct } from "@/data/products";
 
 export function useCart() {
@@ -12,7 +12,7 @@ export function useCart() {
   );
   const items = lines.flatMap((l) => {
     const product = getProduct(l.slug);
-    return product ? [{ product, qty: l.qty }] : [];
+    return product ? [{ key: lineKey(l), product, size: l.size, qty: l.qty }] : [];
   });
   const count = items.reduce((n, i) => n + i.qty, 0);
   const subtotal = items.reduce((n, i) => n + i.qty * i.product.price, 0);

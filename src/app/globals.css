@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #f3f4f6;
+  --bg: #fbf7f4;
   --panel: #ffffff;
-  --ink: #111827;
-  --muted: #4b5563;
-  --line: #e5e7eb;
-  --accent: #4338ca;
+  --ink: #1b1523;
+  --muted: #5f5868;
+  --line: #eadfd8;
+  --accent: #9d174d;
   --accent-contrast: #ffffff;
-  --cta: #c2410c;
+  --cta: #1b1523;
   --good: #15803d;
 }
 
@@ -23,6 +23,7 @@
   --color-cta: var(--cta);
   --color-good: var(--good);
   --font-sans: var(--font-figtree), system-ui, sans-serif;
+  --font-display: var(--font-playfair), Georgia, serif;
 }
 
 html {

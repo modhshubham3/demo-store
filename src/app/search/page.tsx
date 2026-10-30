@@ -24,7 +24,7 @@ export default async function SearchPage({ searchParams }: PageProps<"/search">)
           <p className="font-bold">
             {query ? `Nothing found for “${query}”.` : "Type something in the search bar."}
           </p>
-          <p className="mt-2 text-sm text-muted">Try a brand (Stridex), a product (earbuds) or a category (kitchen).</p>
+          <p className="mt-2 text-sm text-muted">Try a product (kurta, jeans, hoodie), a brand (Northbay) or a colour (teal).</p>
           <Link href="/" className="mt-4 inline-block font-semibold text-accent">
             Back to home →
           </Link>

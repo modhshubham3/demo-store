@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import AddToCartButton from "@/components/AddToCartButton";
+import ProductImage from "@/components/ProductImage";
 import PincodeCheck from "@/components/PincodeCheck";
 import ProductRow from "@/components/ProductRow";
 import Rating from "@/components/Rating";
@@ -83,17 +84,12 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
         ) : null}
         {p.name}
       </nav>
-      <div className="grid grid-cols-[minmax(0,5fr)_minmax(0,6fr)] gap-8 rounded-xl bg-panel p-6 max-[860px]:grid-cols-1">
-        <div
-          className="flex aspect-square items-center justify-center rounded-xl text-[140px]"
-          style={{ backgroundColor: p.tint }}
-          aria-hidden="true"
-        >
-          {p.emoji}
-        </div>
+      <div className="grid grid-cols-[minmax(0,5fr)_minmax(0,6fr)] gap-8 rounded-2xl bg-panel p-6 ring-1 ring-line max-[860px]:grid-cols-1">
+        <ProductImage item={p} className="aspect-[4/5] max-h-[70vh] min-h-[380px] w-full rounded-2xl min-[860px]:sticky min-[860px]:top-32" sizes="(max-width: 860px) 100vw, 45vw" />
         <div>
           <div className="text-sm font-bold uppercase tracking-wide text-accent">{p.brand}</div>
-          <h1 className="mt-1 text-2xl font-extrabold leading-tight sm:text-3xl">{p.name}</h1>
+          <h1 className="font-display mt-1 text-3xl font-extrabold leading-tight sm:text-4xl">{p.name}</h1>
+          <p className="mt-1 text-sm text-muted">Colour: <strong className="text-ink">{p.colorName}</strong></p>
           <div className="mt-2"><Rating value={p.rating} count={p.reviews} /></div>
 
           <div className="mt-4 flex flex-wrap items-baseline gap-3 border-t border-line pt-4">
@@ -113,7 +109,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
 
           <div className="mt-5"><PincodeCheck /></div>
 
-          <div className="mt-6"><AddToCartButton slug={p.slug} /></div>
+          <div className="mt-6"><AddToCartButton slug={p.slug} sizes={p.sizes} /></div>
 
           <ul className="mt-6 grid list-none grid-cols-3 gap-2 border-t border-line pt-4 text-center text-xs text-muted">
             <li>↩️<br />7-day returns</li>
@@ -123,7 +119,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
         </div>
       </div>
 
-      <section className="mt-6 rounded-xl bg-panel p-6" aria-labelledby="about">
+      <section className="mt-6 rounded-2xl bg-panel p-6 ring-1 ring-line" aria-labelledby="about">
         <h2 id="about" className="text-xl font-extrabold">About this item</h2>
         <p className="mt-3 max-w-[70ch] text-muted">{p.description}</p>
         <ul className="mt-4 grid list-none gap-1.5">

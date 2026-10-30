@@ -1,6 +1,8 @@
 import { getProduct } from "@/data/products";
 
-export type CartLine = { slug: string; qty: number };
+export type CartLine = { slug: string; size: string; qty: number };
+
+export const lineKey = (l: { slug: string; size: string }) => `${l.slug}|${l.size}`;
 
 const KEY = "demo-store-cart";
 const EMPTY: CartLine[] = [];
@@ -18,7 +20,11 @@ function load() {
     if (Array.isArray(parsed)) {
       lines = parsed.filter(
         (l): l is CartLine =>
-          typeof l?.slug === "string" && Number.isInteger(l?.qty) && l.qty > 0 && !!getProduct(l.slug),
+          typeof l?.slug === "string" &&
+          typeof l?.size === "string" &&
+          Number.isInteger(l?.qty) &&
+          l.qty > 0 &&
+          !!getProduct(l.slug)?.sizes.includes(l.size),
       );
     }
   } catch {
@@ -48,18 +54,23 @@ export const cartStore = {
   getServerSnapshot(): CartLine[] {
     return EMPTY;
   },
-  add(slug: string) {
+  add(slug: string, size: string) {
     load();
-    const existing = lines.find((l) => l.slug === slug);
+    const key = lineKey({ slug, size });
+    const existing = lines.find((l) => lineKey(l) === key);
     commit(
       existing
-        ? lines.map((l) => (l.slug === slug ? { ...l, qty: Math.min(l.qty + 1, 10) } : l))
-        : [...lines, { slug, qty: 1 }],
+        ? lines.map((l) => (lineKey(l) === key ? { ...l, qty: Math.min(l.qty + 1, 10) } : l))
+        : [...lines, { slug, size, qty: 1 }],
     );
   },
-  setQty(slug: string, qty: number) {
+  setQty(key: string, qty: number) {
     load();
-    commit(qty <= 0 ? lines.filter((l) => l.slug !== slug) : lines.map((l) => (l.slug === slug ? { ...l, qty: Math.min(qty, 10) } : l)));
+    commit(
+      qty <= 0
+        ? lines.filter((l) => lineKey(l) !== key)
+        : lines.map((l) => (lineKey(l) === key ? { ...l, qty: Math.min(qty, 10) } : l)),
+    );
   },
   clear() {
     load();
