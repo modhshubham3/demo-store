@@ -75,6 +75,16 @@ bottle 899, canvas tote 549).
 - `src/app/sitemap.ts` (home, categories, products), `robots.ts` (disallow `/cart`, `/checkout`),
   `not-found.tsx`.
 
+## 4b. Marketplace redesign (Phase 1 done)
+
+Redesigned after the user said the scaffold looked too basic versus Amazon/Flipkart/Myntra/Meesho.
+Patterns copied, not branding. Catalogue is now 42 fictional products in 7 categories with brand, MRP,
+rating, reviews. New: header search (`/search`, noindex), filter sidebar + sort (`Listing.tsx`), deal rows
+on home, rating pills, discount badges, pincode check (demo logic), Buy now, similar products,
+BreadcrumbList JSON-LD. Ratings are fictional, so no `aggregateRating` markup on purpose.
+Phase 2 (not done): size picker (needs cart line schema `slug+size` and API validation), wishlist, real
+coupon code applied at checkout, cart savings line, mobile bottom nav, recently viewed.
+
 ## 5. Next steps (in this order)
 
 1. Run `npm install`, then `npm run lint && npm run build` to confirm the checkout is healthy.

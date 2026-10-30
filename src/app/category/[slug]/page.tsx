@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import ProductCard from "@/components/ProductCard";
+import Listing from "@/components/Listing";
 import { categories, getCategory, productsIn } from "@/data/products";
 
 export function generateStaticParams() {
@@ -25,13 +25,9 @@ export default async function CategoryPage({ params }: PageProps<"/category/[slu
 
   return (
     <>
-      <h1 className="text-4xl font-extrabold">{category.name}</h1>
-      <p className="mt-2 text-muted">{category.blurb}</p>
-      <div className="mt-8 grid grid-cols-[repeat(auto-fill,minmax(min(240px,100%),1fr))] gap-5">
-        {productsIn(category.slug).map((p) => (
-          <ProductCard key={p.slug} product={p} />
-        ))}
-      </div>
+      <h1 className="text-3xl font-extrabold">{category.name}</h1>
+      <p className="mb-6 mt-1 text-muted">{category.blurb}</p>
+      <Listing items={productsIn(category.slug)} />
     </>
   );
 }

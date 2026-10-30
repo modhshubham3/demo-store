@@ -12,7 +12,7 @@ const figtree = Figtree({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: `${SITE_NAME} — home, kitchen & everyday goods`, template: `%s | ${SITE_NAME}` },
+  title: { default: `${SITE_NAME} — fashion, electronics & home`, template: `%s | ${SITE_NAME}` },
   description:
     "A demo online store: product catalogue, cart, and checkout flow, built with Next.js and ready for payment-gateway integration.",
   openGraph: { siteName: SITE_NAME, type: "website", locale: "en_IN" },
@@ -21,11 +21,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={figtree.variable}>
-      <body className="bg-bg font-sans text-[17px] leading-[1.6] text-ink antialiased">
+      <body className="bg-bg font-sans text-base leading-[1.55] text-ink antialiased">
         <Header />
-        <main className="mx-auto max-w-[1080px] px-6 py-12">{children}</main>
+        <main className="mx-auto max-w-[1280px] px-4 py-6">{children}</main>
         <footer className="border-t border-line py-8 text-center text-sm text-muted">
-          Demo store — products and prices are fictional. Built by Shubham Modh.
+          Demo store: products, brands, ratings and prices are fictional. Built by Shubham Modh.
         </footer>
       </body>
     </html>
