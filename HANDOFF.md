@@ -28,10 +28,10 @@ rankings or guaranteed results. Products and prices are fictional.
 |---|---|
 | Scaffold (catalogue, categories, product pages, cart, checkout stub, SEO basics) | Built, `npm run lint` clean, `npm run build` passes |
 | Smoke test | `/`, `/category/*`, `/products/*`, `/cart`, `/checkout`, `/sitemap.xml`, `/robots.txt` return 200; unknown slug returns 404; Product JSON-LD present |
-| Cart click-through in a real browser | **Not tested** |
+| Cart click-through in a real browser | Tested with Playwright/Chromium: add, qty +/-, 10 cap, persistence, empty state, corrupt storage. All pass, no console errors |
 | GitHub repo | Private repo `modhshubham3/demo-store`: scaffold, this file and README are pushed to `main` (the code is already in your checkout, no rebuild needed) |
 | Deploy | Not deployed |
-| Payments | **Not implemented** (checkout is a stub) |
+| Payments | Code done (`/api/orders`, `/api/orders/verify`, checkout wired). Server pricing, validation and signature verify tested with fake keys. **Not tested against real Razorpay**: needs test keys in env |
 | Real images | None (emoji + colour tint placeholders) |
 
 ## 4. What the scaffold contains
